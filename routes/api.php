@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StudentmarksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +25,7 @@ Route::post('/register', [UserController::class, 'Registeruser']);
 Route::post('/login', [UserController::class, 'Authenticate']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    Route::get('/subjects', [StudentmarksController::class, 'get_subjects']);
+    Route::resource('studentmarks', StudentmarksController::class);
     Route::post('/logout', [UserController::class, 'logout']);
 });
