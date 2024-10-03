@@ -27,5 +27,6 @@ Route::post('/login', [UserController::class, 'Authenticate']);
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('/subjects', [StudentmarksController::class, 'get_subjects']);
     Route::resource('studentmarks', StudentmarksController::class);
+    Route::get('/studentslist', [StudentmarksController::class, 'getstudentlist']);
     Route::post('/logout', [UserController::class, 'logout']);
 });

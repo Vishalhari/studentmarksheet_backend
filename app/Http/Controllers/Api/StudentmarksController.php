@@ -126,6 +126,13 @@ class StudentmarksController extends Controller
         return response()->json(['success' => true, 'message' =>'Sucessfully Deleted']);
     }
 
+    function getstudentlist() {
+        $studentmarks = Studentmarks::select('id','student_name','subjectid','marks')
+                        ->groupBy('student_name', 'subjectid', 'id', 'marks')
+                        ->get();
+        return response()->json(['success' => true,'data'=>$studentmarks]);
+    }
+
 
     public function get_subjects() {
         $subjects = Subjects::all();
