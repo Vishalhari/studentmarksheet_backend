@@ -16,7 +16,11 @@ class StudentmarksController extends Controller
      */
     public function index()
     {
-        //
+        $studentmarks = Studentmarks::select('id','student_name','subjectid','marks')
+                        ->with('subjects')
+                        ->orderBy('student_name')
+                        ->get();
+        return response()->json(['success' => true, 'data' =>$studentmarks]);
     }
 
     /**
@@ -69,11 +73,6 @@ class StudentmarksController extends Controller
         }
 
         return response()->json(['success' => true, 'data' =>$studmarks]);
-
-
-        
-
-
     }
 
     /**
@@ -97,7 +96,25 @@ class StudentmarksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $rules = [
+            'student_name' => ['required', 'string'],
+            'subjectid' => ['required'],
+            'marks' => ['required']
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+            return response()->json(['success' => false, 'error' => $validator->messages()]);
+        }
+
+        $studmarks = Studentmarks::find($id);
+        $studmarks->student_name =  $request->student_name;
+        $studmarks->subjectid =  $request->subjectid;
+        $studmarks->marks =  $request->marks;
+        $studmarks->save();
+
+        return response()->json(['success' => true, 'data' =>$studmarks]);
     }
 
     /**
@@ -105,7 +122,8 @@ class StudentmarksController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Studentmarks::where('id',$id)->delete();
+        return response()->json(['success' => true, 'message' =>'Sucessfully Deleted']);
     }
 
 
